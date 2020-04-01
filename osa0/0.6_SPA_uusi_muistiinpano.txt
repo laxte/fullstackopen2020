@@ -1,0 +1,22 @@
+kayttaja->selain:
+note left of selain
+käyttäjä luo uuden muistiinpanon single page -versiossa.
+https://fullstack-exampleapp.herokuapp.com/spa
+end note
+
+
+note right of selain
+Javascrit luo muistiinpanon, lisää sen muistiinpanojen listalle komennolla 
+notes.push(note), piirtää ruudun sisällön eli muistiinpanojen
+listan uudelleen ja lähettää uuden muistiinpanon palvelimelle.
+end note
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note
+note left of palvelin
+  Palvelin tallentaa formissa lähetetyn datan palauttaa 201, {"message":"note created"}
+end note
+palvelin->selain: status 201, kuittaus muistiinpanon tallettamisesta
+
+note left of selain
+ selain näyttää palvelimen palauttaman HTML:n CSS:n sekä JS:n
+ avulle sekä esittä javascriptin datasta muodostaman listan.
+end note
