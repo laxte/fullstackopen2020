@@ -31,9 +31,9 @@ const Feedback = (props) => {
   return (
     <div>
       <h1>give feedback</h1>
-      <Button onClick={props.incGood} text="good"/>
-      <Button onClick={props.incNeutral} text="netural"/>
-      <Button onClick={props.incBad} text="bad"/>
+      <Button onClick={props.incGood} text="good" />
+      <Button onClick={props.incNeutral} text="netural" />
+      <Button onClick={props.incBad} text="bad" />
     </div>
   )
 }
@@ -44,7 +44,8 @@ const Button = (props) => (
 
 const Statistics = (props) => {
   const sum = props.good + props.neutral + props.bad
-  const average = (props.good - props.bad) / sum
+  const average = ((props.good - props.bad) / sum).toFixed(1);
+  const persentage = ((props.good / sum)*100).toFixed(1);
   if (sum === 0)
     return (
       <div>
@@ -56,18 +57,26 @@ const Statistics = (props) => {
     return (
       <div>
         <h1>statistics</h1>
-        <StatisticLine text="good" value={props.good}/>
-        <StatisticLine text="neutral" value={props.neutral}/>
-        <StatisticLine text="bad" value={props.bad}/>
-        <StatisticLine text="all" value={sum}/>
-        <StatisticLine text="average" value={average}/>
-        <StatisticLine text="positive" value={props.good / sum}/>
+        <table>
+          <tbody>
+            <StatisticLine text="good" value={props.good} />
+            <StatisticLine text="neutral" value={props.neutral} />
+            <StatisticLine text="bad" value={props.bad} />
+            <StatisticLine text="all" value={sum} />
+            <StatisticLine text="average" value={average} />
+            <StatisticLine text="positive" value={persentage} label="%"/>
+          </tbody>
+        </table>
       </div>
     )
 }
 
 const StatisticLine = (props) => (
-  <div>{props.text} {props.value}</div>
+  <tr>
+    <td>{props.text}</td> 
+    <td>{props.value}</td>
+    <td>{props.label}</td>
+  </tr>
 )
 
 ReactDOM.render(<App />,
