@@ -31,12 +31,16 @@ const Feedback = (props) => {
   return (
     <div>
       <h1>give feedback</h1>
-      <button onClick={props.incGood}>good</button>
-      <button onClick={props.incNeutral}>netural</button>
-      <button onClick={props.incBad}>bad</button>
+      <Button onClick={props.incGood} text="good"/>
+      <Button onClick={props.incNeutral} text="netural"/>
+      <Button onClick={props.incBad} text="bad"/>
     </div>
   )
 }
+
+const Button = (props) => (
+  <button onClick={props.onClick}>{props.text}</button>
+)
 
 const Statistics = (props) => {
   const sum = props.good + props.neutral + props.bad
@@ -52,15 +56,19 @@ const Statistics = (props) => {
     return (
       <div>
         <h1>statistics</h1>
-        <div>good {props.good}</div>
-        <div>neutral {props.neutral}</div>
-        <div>bad {props.bad}</div>
-        <div>all {sum}</div>
-        <div>average {average}</div>
-        <div>positive {props.good / sum}</div>
+        <StatisticLine text="good" value={props.good}/>
+        <StatisticLine text="neutral" value={props.neutral}/>
+        <StatisticLine text="bad" value={props.bad}/>
+        <StatisticLine text="all" value={sum}/>
+        <StatisticLine text="average" value={average}/>
+        <StatisticLine text="positive" value={props.good / sum}/>
       </div>
     )
 }
+
+const StatisticLine = (props) => (
+  <div>{props.text} {props.value}</div>
+)
 
 ReactDOM.render(<App />,
   document.getElementById('root')
