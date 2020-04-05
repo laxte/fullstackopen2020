@@ -41,17 +41,25 @@ const Feedback = (props) => {
 const Statistics = (props) => {
   const sum = props.good + props.neutral + props.bad
   const average = (props.good - props.bad) / sum
-  return (
-    <div>
-      <h1>statisticsk</h1>
-      <div>good {props.good}</div>
-      <div>neutral {props.neutral}</div>
-      <div>bad {props.bad}</div>
-      <div>all {sum}</div>
-      <div>average {average}</div>
-      <div>positive {props.good / sum}</div>
-    </div>
-  )
+  if (sum === 0)
+    return (
+      <div>
+        <h1>statistics</h1>
+        <div>No feedback given</div>
+      </div>
+    )
+  else
+    return (
+      <div>
+        <h1>statistics</h1>
+        <div>good {props.good}</div>
+        <div>neutral {props.neutral}</div>
+        <div>bad {props.bad}</div>
+        <div>all {sum}</div>
+        <div>average {average}</div>
+        <div>positive {props.good / sum}</div>
+      </div>
+    )
 }
 
 ReactDOM.render(<App />,
