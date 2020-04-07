@@ -33,11 +33,15 @@ const App = () => {
 }
 
 const Course = (props) => {
+
+  const exerciseArray = props.course.parts.map( part => part.exercises)
+  const total = exerciseArray.reduce((s, p) => s + p)
+
   return (
     <div>
       <Header course={props.course.name} />
       <Content parts={props.course.parts} />
-      <Total parts={props.course.parts} />
+      <Total total={total} />
     </div>
   )
 }
@@ -65,7 +69,7 @@ const Part = (props) => (
 )
 
 const Total = (props) => (
-  <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+  <h3>Total of exercises {props.total}</h3>
 )
 
 ReactDOM.render(<App />, document.getElementById('root'))
