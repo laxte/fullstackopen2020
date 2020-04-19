@@ -7,7 +7,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
 
 
-  const addContact = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     console.log(event.target)
     const personObject = {
@@ -19,41 +19,50 @@ const App = () => {
 
  const handleNewNameChange = (event) => {
    console.log(event.target.value)
-   setNewName(event.target.value)
+   const newName = event.target.value
+   setNewName(newName)
+   const mathces = persons.filter(person => person.name === newName)
+   if (mathces.length > 0) {
+    window.alert(`${newName} is already added to phonebook`)
+    document.getElementById("mybutton").disabled = true
+   }
+   else {
+    document.getElementById("mybutton").disabled = false
+   }
  }
 
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addContact}>
+      <form onSubmit={addPerson}>
         <div>
           name: <input value={newName} onChange={handleNewNameChange}/>
         </div>
         <div>
-          <button type="submit">add</button>
+          <button id="mybutton" type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
-      <Numbers persons={persons} />
+      <Persons persons={persons} />
     </div>
   )
 
 }
 
-const Numbers = (props) => {
+const Persons = (props) => {
   return (
     props.persons.map(person => {
       console.log(person)
       return (
-        <Number key={person.name} name={person.name} />
+        <Person key={person.name} name={person.name} />
       )
     }
     )
   )
 }
 
-const Number = (props) => {
+const Person = (props) => {
   return (
     <p> {props.name} </p>
   )
