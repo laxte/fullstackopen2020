@@ -2,15 +2,15 @@ import React, { useState } from 'react'
 
 const App = () => {
   const [persons, setPersons] = useState([
-    {
-      name: 'Arto Hellas',
-      number: '12345'
-    }
+    { name: 'Arto Hellas', number: '040-123456' },
+    { name: 'Ada Lovelace', number: '39-44-5323523' },
+    { name: 'Dan Abramov', number: '12-43-234345' },
+    { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-
-
+  const [filter, setFilter] = useState('')
+ 
   const addPerson = (event) => {
     event.preventDefault()
     const personObject = {
@@ -22,7 +22,7 @@ const App = () => {
     setNewNumber('')
   }
 
-  const handleNewNameChange = (event) => {
+  const handleNameChange = (event) => {
     const newName = event.target.value
     setNewName(newName)
     const mathces = persons.filter(person => person.name === newName)
@@ -40,32 +40,64 @@ const App = () => {
     setNewNumber(newNumber)
   }
 
+  const handleFilterChange = (event) => {
+    const newFilter = event.target.value
+    setFilter(newFilter)
+    console.log(newFilter)
+  }
+
+
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNewNameChange} />
-        </div>
-        <div>
-          number: <input value={newNumber} onChange={handleNumberChange} />
-        </div>
-        <div>
-          <button id="mybutton" type="submit">add</button>
-        </div>
-      </form>
+      <Filter newFilter={filter} handleFilterChange={handleFilterChange} />
+      <h2>add a new</h2>
+      <PersonForm addPerson={addPerson} newName={newName} handleNewNameChange={handleNameChange}
+        newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} />
+      <Persons persons={persons} filter={filter} />
+    </div>
+  )
+}
+
+const PersonForm = (props) => {
+  return (
+    <form onSubmit={props.addPerson}>
+      <div>
+        name: <input value={props.newName} onChange={props.handleNewNameChange} />
+      </div>
+      <div>
+        number: <input value={props.newNumber} onChange={props.handleNumberChange} />
+      </div>
+      <div>
+        <button id="mybutton" type="submit">add</button>
+      </div>
+    </form>
+  )
+}
+
+const Filter = (props) => {
+  return (
+    <div>
+      filter shown with: <input value={props.newFilter} onChange={props.handleFilterChange} />
     </div>
   )
 
 }
 
 const Persons = (props) => {
+
+  let filteredPersons = props.persons.slice()
+  if (props.filter.length !== 0) {
+    filteredPersons = props.persons.filter(person =>
+      person.name.toLowerCase().includes(props.filter.toLowerCase()
+      ))
+  }
+
   return (
-    props.persons.map(person => {
+    filteredPersons.map(person => {
       return (
-        <Person key={person.name} name={person.name} number={person.number}/>
+        <Person key={person.name} name={person.name} number={person.number} />
       )
     }
     )
