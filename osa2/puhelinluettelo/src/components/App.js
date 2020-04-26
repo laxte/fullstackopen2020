@@ -6,13 +6,13 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
- 
+  const baseUrl = 'http://localhost:3001/persons'
+
+
   useEffect(() => {
-    console.log('effect')
     axios
       .get('http://localhost:3001/persons')
       .then(response => {
-        console.log('promise fulfilled')
         setPersons(response.data)
       })
   }, [])
@@ -24,10 +24,20 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    setPersons(persons.concat(personObject))
-    setNewName('')
-    setNewNumber('')
+
+    create(personObject)
+    .then(response => {
+      setPersons(persons.concat(response))
+      setNewName('')
+      setNewNumber('')
+    })
   }
+
+  const create = newObject => {
+    const request = axios.post(baseUrl, newObject)
+    return request.then(response => response.data)
+  }
+
 
   const handleNameChange = (event) => {
     const newName = event.target.value
@@ -50,7 +60,6 @@ const App = () => {
   const handleFilterChange = (event) => {
     const newFilter = event.target.value
     setFilter(newFilter)
-    console.log(newFilter)
   }
 
 
