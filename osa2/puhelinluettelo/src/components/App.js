@@ -1,5 +1,5 @@
 import React, { useState , useEffect } from 'react'
-import axios from 'axios'
+import server from './server.js'
 
 const App = () => {
   const [persons, setPersons] = useState('')
@@ -10,11 +10,8 @@ const App = () => {
 
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
-      })
+    server.getAll('http://localhost:3001/persons')
+      .then(response => setPersons(response.data))
   }, [])
 
 
@@ -25,17 +22,12 @@ const App = () => {
       number: newNumber
     }
 
-    create(personObject)
-    .then(response => {
-      setPersons(persons.concat(response))
-      setNewName('')
-      setNewNumber('')
-    })
-  }
-
-  const create = newObject => {
-    const request = axios.post(baseUrl, newObject)
-    return request.then(response => response.data)
+    server.create(baseUrl, personObject)
+      .then(response => {
+        setPersons(persons.concat(response))
+        setNewName('')
+        setNewNumber('')
+      })
   }
 
 
