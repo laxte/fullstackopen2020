@@ -5,9 +5,14 @@ const create = (baseUrl, newObject) => {
     return request.then(response => response.data)
 }
 
-const getAll = () => {
-    const request = axios.get('http://localhost:3001/persons')
+const getAll = baseUrl => {
+    const request = axios.get(baseUrl)
     return request.then(response => response)
 }
 
-export default { create , getAll }
+const deletePerson = (baseUrl, id) => {
+    const request = axios.delete(`${baseUrl}/${id}`)
+    return request.then(response => response)
+}
+
+export default { create , getAll, deletePerson }

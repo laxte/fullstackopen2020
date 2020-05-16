@@ -10,7 +10,7 @@ const App = () => {
 
 
   useEffect(() => {
-    server.getAll('http://localhost:3001/persons')
+    server.getAll(baseUrl)
       .then(response => setPersons(response.data))
   }, [])
 
@@ -30,6 +30,19 @@ const App = () => {
       })
   }
 
+  const deletePerson = (event) => {
+    if (window.confirm(`Delete ${event.target.name} ?`)) {
+      event.preventDefault()
+      const id = parseInt(event.target.id)
+      server.deletePerson(baseUrl, id)
+        .then(response => {
+          const filteredPersons = persons.filter(person => {
+            return person.id !== id
+          })
+          setPersons(filteredPersons)
+        })
+    }
+  }
 
   const handleNameChange = (event) => {
     const newName = event.target.value
@@ -63,7 +76,7 @@ const App = () => {
       <PersonForm addPerson={addPerson} newName={newName} handleNewNameChange={handleNameChange}
         newNumber={newNumber} handleNumberChange={handleNumberChange}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter} />
+      <Persons persons={persons} filter={filter} deletePerson={deletePerson}/>
     </div>
   )
 }
@@ -107,7 +120,7 @@ const Persons = (props) => {
   return (
     filteredPersons.map(person => {
       return (
-        <Person key={person.name} name={person.name} number={person.number} />
+        <Person key={person.id} id={person.id} name={person.name} number={person.number} deletePerson={props.deletePerson}/>
       )
     }
     )
@@ -116,7 +129,7 @@ const Persons = (props) => {
 
 const Person = (props) => {
   return (
-    <p> {props.name} {props.number}</p>
+    <p> {props.name} {props.number} <button onClick={props.deletePerson} id={props.id} name={props.name}>delete</button></p> 
   )
 }
 
